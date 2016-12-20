@@ -1,5 +1,5 @@
 @(JS高级程序设计)
-
+# chapter 1-3
 - `<noscript>`元素会在浏览器不支持脚本或者脚本被禁用时显示`<noscript></noscript>`中的内容。
 
 
@@ -47,5 +47,8 @@ function args(){
 }
 args('Hello,','World!');//Hello,World!
 ```
+---
+> JavaScript没有重载，也就是说如果定义了两个相同名字的函数，则该名字只属于后定义的那个函数。
+
 
 
