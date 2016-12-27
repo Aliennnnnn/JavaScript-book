@@ -59,3 +59,78 @@ console.log(matches[2])//' and baby'
 ## Function类型
 ### 没有重载
 **名字相同的两个函数，后面的那个函数会覆盖前面的那个函数。**
+
+### 函数属性和方法
+每个函数都包含两个属性：`length`和`prototype`。
+length代表函数接收的命名参数
+
+```
+var sayHi(){
+	console.log('hi');
+}
+var sayName(name){
+	console.log(name);
+}
+var sum(num1,num2){
+	console.log(num1+num2);
+}
+
+console.log(sayHi.length);//0
+console.log(sayName.length);//1
+console.log(sum.length);//2
+```
+
+prototype：原型，具体第六章讨论。
+
+每个函数都包含两个非继承而来的方法：`apply()`和`call()`。
+> **两个方法的用途都是在特定的作用域中调用函数，实际上等于设置函数体内this对象的值.**
+
+`call()`方法和`apply()`方法作用相同，区别仅在与接收参数的方式不同。
+
+- `apply()`：第一个参数是在其中运行函数的作用域，第二个是参数数组，但是第二个参数可以是数组实例，也可以是arguments对象。
+
+```
+function sum(num1,num2){
+	return num1+num2;
+}
+function callSum1(num1,num2){
+	return sum.apply(this,arguments);
+}//传入arguments对象
+function callSum2(num1,num2){
+	return sum.apply(this,[num1,num2]);
+}//传入数组
+console.log(callSum1(10,55));//65
+console.log(callSum2(10,55));//65
+```
+
+
+- 而`call()`方法第二个参数和`apply()`不同，它必须把传递给函数的参数逐个列举出来。
+
+```
+function sum(num1,num2){
+	return num1 + num2;
+}
+function callSum(num1,num2){
+	return sum.call(this,sum1,sum2);
+}
+console.log(callSum(10,55));//65
+```
+**也就是说，`call()`方法不能像`apply()`方法一样把要传递的参数存进一个数组传递进去，它必须把所有参数依次列举出来。**
+
+
+----------
+**然而这两个函数真正强大的地方在于能够扩充函数赖以运行的作用域。**
+
+```
+window.color = 'red';
+var a = {color: "blue"};
+
+function sayColor(){
+	alert(this.color);
+}
+
+sayColor();				//red
+sayColor.call(this);	//red
+sayColor.call(window);	//red
+sayColor.call(a);		//blue
+```
