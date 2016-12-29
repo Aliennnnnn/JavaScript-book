@@ -82,6 +82,7 @@ console.log(sum.length);//2
 
 prototype：原型，具体第六章讨论。
 
+### apply()和call()
 每个函数都包含两个非继承而来的方法：`apply()`和`call()`。
 > **两个方法的用途都是在特定的作用域中调用函数，实际上等于设置函数体内this对象的值.**
 
@@ -134,3 +135,52 @@ sayColor.call(this);	//red
 sayColor.call(window);	//red
 sayColor.call(a);		//blue
 ```
+
+
+----------
+
+
+咳咳：划**重点**了，目前我对`apply()`和`call()`方法的其中一个理解就是：
+**这两个方法可以改变this的指向，让一个没有某个方法的A函数可以用过改变B函数中的那个方法中this的指向来调用这个方法。**
+比如：
+```
+function Animal(){
+   	this.name = 'animallll';
+   	this.showName = function(){
+   	alert(this.name);
+  }
+}
+
+function Cat(){
+   	this.name = 'Catttt';
+}
+
+var animal = new Animal();
+var cat = new Cat();
+
+animal.showName.apply(cat);//Catttt
+```
+这段代码中`cat`并没有`showName`方法，但是可以通过修改`animal`中`showName`this的指向来使用该方法。
+
+**特别注明，修改的是调用`call()`和`apply()`方法的实例中的this指向，指向`call()`或者`apply()`中第一个参数**
+
+
+----------
+
+```
+function cat(){
+	
+}
+cat.prototype = {
+	food:'fish',
+	say:function(){
+		alert('I love'+ this.food);
+	}
+}
+var blackCat = new cat();
+blackCat.say();
+```
+
+> call 和 apply 都是为了改变某个函数运行时的 context 即上下文而存在的，换句话说，就是为了改变函数体内部 this 的指向。因为 JavaScript 的函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念。
+
+
